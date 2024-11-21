@@ -2,9 +2,9 @@
     <div>
         <v-card style="width: 100%;" class="border pa-10 pt-0" title="Print Verse Cards">
 
-            <v-row >
+            <v-row>
 
-                <v-col >
+                <v-col>
                     <v-row class="px-4">
 
 
@@ -16,22 +16,28 @@
                                 :items="translations"></v-select>
                         </v-col>
 
-
-
-
                     </v-row>
                     <v-container fluid>
-                        <v-textarea clear-icon="mdi-close-circle" label="Verses" placeholder="Pslam 23:4, John 3:16"
-                            min-width="30rem" min-height="300rem" clearable no-resize
-                            persistent-placeholder></v-textarea>
+                        <v-textarea v-model="verseInput" clear-icon="mdi-close-circle" label="Verses"
+                            placeholder="Pslam 23:4, John 3:16" min-width="30rem" min-height="300rem" clearable
+                            no-resize persistent-placeholder></v-textarea>
                     </v-container>
                 </v-col>
 
                 <v-col>
-                    <v-checkbox  v-model="showTopic" hide-details label="Topic"></v-checkbox>
-                    <v-checkbox  v-model="showTranslation" hide-details label="Translation"></v-checkbox>
-                    <v-checkbox  v-model="showRepeatReference" hide-details label="Repeat Reference"></v-checkbox>
-                   
+                    <h3 class="text-center font-weight-medium">Font</h3>
+                    <v-radio-group inline center-affix v-model="font" class="mt-1">
+
+                        <v-radio label="Arial" value="Arial"></v-radio>
+                        <v-radio label="Times New Roman" value="Times"></v-radio>
+                        <v-radio label="Brush Script MT " value="cursive"></v-radio>
+                    </v-radio-group>
+                    <h3 class="text-center font-weight-medium ">Format</h3>
+                    <v-checkbox v-model="showTopic" hide-details label="Topic" :disabled="true"></v-checkbox>
+                    <v-checkbox v-model="showTranslation" hide-details label="Translation"></v-checkbox>
+                    <v-checkbox v-model="showRepeatReference" hide-details label="Repeat Reference"></v-checkbox>
+
+
                 </v-col>
             </v-row>
 
@@ -40,26 +46,28 @@
 
         </v-card>
 
+        <h3 class="mt-10">Preview</h3> <!--                                         PREVIEW              -->
         <v-card width="336px" height="192px" class="cardPreview border">
 
-            <v-row  justify="space-between">
+            <v-row justify="space-between">
                 <v-spacer v-show="!showTopic"></v-spacer>
-                <p v-show="showTopic" class="topic" id="topic"> Christ the Center </p>
-                <p v-show="showTranslation" class="translation" id="translation"> ESV</p>
+                <p v-show="showTopic" class="topic" id="topic" :style="{ fontFamily: font }"> Christ the Center </p>
+                <p v-show="showTranslation" class="translation" id="translation" :style="{ fontFamily: font }"> ESV</p>
             </v-row>
 
             <v-row>
-                <p class="reference" id="reference"> 2 Corinthians 5:17 </p>
+                <p class="reference" id="reference" :style="{ fontFamily: font }"> 2 Corinthians 5:17 </p>
             </v-row>
 
             <v-row class="mt-4">
-                <p class="verse" id="verse"> Therefore, if anyone is in Christ, he is a new creation.
+                <p class="verse" id="verse" :style="{ fontFamily: font }"> Therefore, if anyone is in Christ, he is a
+                    new creation.
                     The old has passed away; behold, the new has come</p>
             </v-row>
 
             <v-row class="mt-4" v-show="showRepeatReference" justify="space-between">
-                <v-spacer ></v-spacer>
-                <p class="reference2" id="reference2"> 2 Corinthians 5:17 </p>
+                <v-spacer></v-spacer>
+                <p class="reference2" id="reference2" :style="{ fontFamily: font }"> 2 Corinthians 5:17 </p>
             </v-row>
 
         </v-card>
@@ -75,30 +83,22 @@ export default {
     data() {
         return {
             // Items to display in v-select
-            translations: ['ESV', 'NIV', 'KJV', 'NLT', 'NKJV'],
+            translations: ['ESV', 'KJV', 'NLT', 'NKJV'], //'NIV'
             // Default selected value
             selectedTranslation: 'ESV',
-            fonts: ['helvetica', 'Times New Roman'],
+            font: 'Helvetica',
             showTranslation: true,
-            showTopic: true,
+            showTopic: false,
             showRepeatReference: true,
+            verseInput: "",
+
+            verse_List: []
         };
 
     },
 
     methods: {
-
-        fetchVerses() {
-
-            const options = { method: 'GET', headers: { accept: 'application/json' } };
-
-            fetch('https://beta.ourmanna.com/api/v1/get?format=json&order=daily', options)
-                .then(res => res.json())
-                .then(res => { console.log(res); this.verseOfTheDay = res.verse.details; this.votd_reference = this.verseOfTheDay.reference + " (" + this.verseOfTheDay.version + ")" })
-                .catch(err => console.error(err));
-        },
-
-        generateAndPrintCards() {
+        async generateAndPrintCards() {
 
             // 20 unit padding around entire document
 
@@ -118,12 +118,19 @@ export default {
             const marginX = 10; // Horizontal margin from the page edges
             const marginY = 10; // Vertical margin from the page edges
 
+            const referenceList = this.verseInput.split(","); // SPLit on commas
+            this.verse_List = [] //reset
+            for (let ref of referenceList) {
+                console.log("ref: " + ref);
+                let verse = await this.fetchVerse(ref);
+                console.log(verse);
+                this.verse_List.push(verse);
+            }
 
+            console.log("VERSE LIST")
+            console.log(this.verse_List)
 
-
-
-
-
+            console.log(this.verse_List[0])
             // Loop through rows and columns to place each card
             for (let row = 0; row < cardsPerColumn; row++) {
                 for (let col = 0; col < cardsPerRow; col++) {
@@ -131,8 +138,15 @@ export default {
                     const x = marginX + col * (card_width); // 10mm space between cards
                     const y = marginY + row * (card_height); // 10mm space between cards
 
-                    // Create the business card content (draw lines and text)
-                    this.drawBusinessCard(doc, x, y, card_width, card_height);
+                    let index = (row * 2) + col
+                    console.log("index: " + index)
+                    console.log(this.verse_List[index])
+                    if (this.verse_List[index] != null) {
+                        // Create the business card content (draw lines and text)
+                        console.log("Drawing Card at index: " + index)
+                        this.drawBusinessCard(doc, x, y, card_width, card_height, this.verse_List[index]);
+                    }
+
                 }
             }
 
@@ -140,7 +154,62 @@ export default {
             //doc.autoPrint();
             window.open(doc.output("bloburl"), "_blank");
         },
-        drawBusinessCard(doc, x, y, width, height) {
+
+
+        async fetchVerse(_ref) {
+
+            let _verse = ""
+
+            if (this.selectedTranslation == "ESV") { // ESV 
+
+                const params = new URLSearchParams({
+                    'q': _ref, // the Verses to request 
+                    'include-headings': false,
+                    'include-footnotes': false,
+                    'include-verse-numbers': false,
+                    'include-short-copyright': false,
+                    'include-passage-references': false
+                });
+                const options = { method: 'GET', headers: { accept: 'application/json', Authorization: this.$ESV_API_KEY } };
+
+
+                await fetch(`https://api.esv.org/v3/passage/text/?${params}`, options)
+                    .then(res => res.json())
+                    .then(res => {
+                        _verse = res.passages[0]
+                    })
+                    .catch(err => console.error(err));
+
+                return {  // return verse object                                               !!!! Add Error handling   !!! TODO: 
+                    ref: _ref,
+                    verse: _verse,
+                    topic: ""
+                };
+            }
+            else if (this.selectedTranslation == "NLT") { // NLT
+                // https://bolls.life/get-chapter/NIV/22/8/
+            }
+            else if (this.selectedTranslation == "NKJV") { // NKJV
+
+                const options = { method: 'GET', headers: { accept: 'application/json', Authorization: this.$NKJV_API_KEY } };
+                fetch('https://bolls.life/get-chapter/NLT/22/8/', options)
+                    .then(res => res.json())
+                    .then(res => { console.log(res); })
+                    .catch(err => console.error(err));
+            }
+            else if (this.selectedTranslation == "KJV" || this.selectedTranslation == "ASV") { // KJV and ASV
+
+                const options = { method: 'GET', headers: { accept: 'application/json', Authorization: this.$GEN_API_KEY } };
+                fetch('https://bolls.life/get-chapter/NLT/22/8/', options)
+                    .then(res => res.json())
+                    .then(res => { console.log(res); })
+                    .catch(err => console.error(err));
+            }
+
+        },
+
+
+        drawBusinessCard(doc, x, y, width, height, verse) {
             const paddingX = 5; // left padding
 
             const topic_FontSize = 12;
@@ -156,23 +225,26 @@ export default {
             doc.rect(x, y, width, height); // x, y, width, height
 
             // Topic 
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(topic_FontSize);
-            doc.text("Christ the Center", x + paddingX, y + 7);
-
+            if (this.showTopic) {
+                doc.setFont(this.font, "bold");
+                doc.setFontSize(topic_FontSize);
+                doc.text(verse.topic, x + paddingX, y + 7);
+            }
             // Translation 
-            doc.setFont("helvetica", "normal");
-            doc.setFontSize(translation_FontSize);
-            doc.text("ESV", x + width - 10, y + 7);
-
+            if (this.showTranslation) {
+                doc.setFont(this.font, "normal");
+                doc.setFontSize(translation_FontSize);
+                doc.text("ESV", x + width - 10, y + 7);
+            }
             // Reference
+            doc.setFont(this.font, "normal");
             doc.setFontSize(reference_FontSize);
-            doc.text("2 Corinthians 5:17", x + paddingX, y + 13);
+            doc.text(verse.ref, x + paddingX, y + 13);
 
             // Verse
+            doc.setFont(this.font, "normal");
             doc.setFontSize(verse_FontSize);
-            const text = "Therefore, if anyone is in Christ, he is a new creation. The old has passed away; behold, the new has come."
-            const wrappedText = doc.splitTextToSize(text, width - 10); // 10mm for left and right margin
+            const wrappedText = doc.splitTextToSize(verse.verse.trim(), width - 10); // 10mm for left and right margin
             const lineHeight = 5; // Increase line height by adjusting the spacing between lines
             let lineY = y + 20;
             wrappedText.forEach(line => {
@@ -182,10 +254,11 @@ export default {
 
 
             // 2nd Reference
-            doc.setFontSize(reference_FontSize);
-            doc.text("2 Corinthians 5:17", x + width - 30, lineY + 2);
-
-
+            if (this.showRepeatReference) {
+                doc.setFont(this.font, "normal");
+                doc.setFontSize(reference_FontSize);
+                doc.text(verse.ref, x + width - 30, lineY + 2);
+            }
 
 
         }
@@ -199,7 +272,7 @@ export default {
 .cardPreview {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 40px;
+    margin-top: 10px;
     padding: 30px;
 }
 
@@ -222,7 +295,8 @@ export default {
 .verse {
     font-family: helvetica;
     text-align: left;
-    font-size: 12px; /*   16px - 3 - 13   */ 
+    font-size: 12px;
+    /*   16px - 3 - 13   */
     line-height: 1.5;
 }
 
