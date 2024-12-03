@@ -4,7 +4,7 @@
 
     <v-navigation-drawer flat class="drawer-list" v-model="drawer" :rail="rail" permanent @click="rail = false">
       <v-list-item prepend-icon="mdi-book-open-variant ml-2" nav>
-        <v-list-item-title class="websiteTitle">Versora</v-list-item-title>
+        <v-list-item-title class="websiteTitle">VersePacks</v-list-item-title>
         <template v-slot:append>
           <v-btn icon="mdi-chevron-left" variant="text" @click.stop="rail = !rail"></v-btn>
         </template>
@@ -114,8 +114,8 @@ export default {
 
 .websiteTitle {
   text-align: left;
-  font-size: 1.5rem !important;
-  font-weight: 600 !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
   letter-spacing: normal !important;
   line-height: 2rem !important;
 
