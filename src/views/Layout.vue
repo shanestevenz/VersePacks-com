@@ -2,8 +2,9 @@
   <v-layout class="rounded rounded-md">
 
 
-    <v-navigation-drawer class="drawer-list" v-model="drawer" :rail="rail" permanent @click="rail = false">
-      <v-list-item prepend-icon="mdi-card-multiple-outline ml-2" title="Verse Card Printer" nav>
+    <v-navigation-drawer flat class="drawer-list" v-model="drawer" :rail="rail" permanent @click="rail = false">
+      <v-list-item prepend-icon="mdi-book-open-variant ml-2" nav>
+        <v-list-item-title class="websiteTitle">Versora</v-list-item-title>
         <template v-slot:append>
           <v-btn icon="mdi-chevron-left" variant="text" @click.stop="rail = !rail"></v-btn>
         </template>
@@ -12,15 +13,26 @@
       <v-divider></v-divider>
 
       <v-list density="compact" nav>
-        <v-list-item prepend-icon="mdi-home" title="Home" value="home"></v-list-item>
-        <v-list-item prepend-icon="mdi-bookshelf" title="Verse Packs" value="packs"></v-list-item>
-        <v-list-item prepend-icon="mdi-head-question" title="Quiz" value="quiz"></v-list-item>
+        <RouterLink class="text-black text-left" to="/"> <v-list-item prepend-icon="mdi-home-outline" title="Home"
+            value="home"></v-list-item></RouterLink>
+        <RouterLink class="text-black text-left" to="/"> <v-list-item prepend-icon="mdi-bookshelf" title="Verse Packs"
+          :disabled="true" value="packs"></v-list-item>
+        </RouterLink>
+        <RouterLink class="text-black text-left" to="/"> <v-list-item prepend-icon="mdi-head-question-outline" title="Quiz"
+            value="quiz" :disabled="true"></v-list-item>
+        </RouterLink>
+        <RouterLink class="text-black text-left" to="/"> <v-list-item prepend-icon="mdi-bug-outline" title="Report bug" value="report"
+          :disabled="true"></v-list-item>
+        </RouterLink>
+        <RouterLink class="text-black text-left" to="/"> <v-list-item prepend-icon="mdi-arrow-right" title="More" value="more"
+            :disabled="true"></v-list-item>
+        </RouterLink>
       </v-list>
 
       <template v-slot:append>
         <div class="pa-2" v-show="!rail">
-          <v-card class="bottom-item" title="Verse of the Day" :subtitle="votd_reference" :text="verseOfTheDay.text">
-
+          <v-card class="bottom-item " flat title="Verse of the Day" :subtitle="votd_reference" :text="verseOfTheDay.text">
+            
           </v-card>
         </div>
       </template>
@@ -30,9 +42,8 @@
 
     </v-navigation-drawer>
 
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
-
-      <Home></Home>
+    <v-main class="" style="">
+      <router-view />
 
     </v-main>
   </v-layout>
@@ -92,10 +103,26 @@ export default {
   /* Ensures items are distributed properly */
   height: 100%;
   /* Ensures the drawer uses full height */
+  background-color: #ffffff;
+  color: black;
 }
 
 .bottom-item {
   margin-top: auto;
   /* Pushes this item to the bottom */
+}
+
+.websiteTitle {
+  text-align: left;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  letter-spacing: normal !important;
+  line-height: 2rem !important;
+
+  background: linear-gradient(to left, 
+      indigo, blue);
+  
+      -webkit-background-clip: text;
+  color: transparent;
 }
 </style>
