@@ -1,126 +1,284 @@
 <template>
-    <div>
-        <v-row no-gutters>
-            <v-col>
+    <div class="mb-10">
 
-                <v-card style="width: 100%;" class="border px-10 pt-0 pb-3" title="Print Verse Cards">
-                    <v-row> <!-- VERSE INPUT -->
-                        <v-col>
-                            <v-row class="px-4">
-                                <v-col>
-                                    <p class="text-center">Enter the verse references below separated by commas.
-                                        Optionally, add parentheses after to include a topic. </p>
-                                </v-col>
-                                <v-col cols="6">
-                                    <v-select bg-color="#f6f7fb" label="Select Translation"
-                                        v-model="selectedTranslation" :items="translations"></v-select>
-                                </v-col>
+        <h1 class="text-left mx-0">Create Your Verse Cards</h1>
 
-                            </v-row>
-                            <v-container fluid>
-                                <v-textarea v-model="verseInput" bg-color="#f6f7fb" clear-icon="mdi-close-circle"
-                                    label="Verses" placeholder="Pslam 23:4, John 3:16 (The Gospel)," min-width="30rem"
-                                    min-height="300rem" clearable no-resize persistent-placeholder></v-textarea>
-                            </v-container>
+        <v-row class="mx-0 ">
+
+            <v-col class="px-0 pt-0" cols="12" md="6">
+                <div class="column-content">
+
+
+
+                    <v-container fluid class="px-0">
+                        <p class="text-left  pb-2">Enter Bibe Verses (separated by commas)</p>
+
+                        <v-textarea v-model="verseInput" bg-color="#ffffff" clear-icon="mdi-close-circle" label="Verses"
+                            placeholder="Pslam 23:4, John 3:16 (The Gospel)," min-width="300px" min-height="300rem"
+                            clearable no-resize persistent-placeholder variant="solo"></v-textarea>
+
+                    </v-container>
+
+                    <v-row class="px-0 mx-0">
+                        <v-col class="px-0">
+                            <h3 class="text-left font-weight-medium mb-1">Translation</h3>
+                            <v-select bg-color="#ffffff" @change="getPreviewVerse" v-model="selectedTranslation"
+                                :items="translations" variant="outlined" return-object></v-select>
                         </v-col>
 
-                        <v-col cols="3">
-
-                            <h3 class="text-center font-weight-medium ">Format</h3>
-                            <v-checkbox class="text-left" color="primary" v-model="showTopic" hide-details
-                                label="Topic"></v-checkbox>
-                            <v-checkbox class="text-left" color="primary" v-model="showTranslation" hide-details
-                                label="Translation"></v-checkbox>
-                            <v-checkbox class="text-left" color="primary" v-model="showRepeatReference" hide-details
-                                label="Repeat Reference"></v-checkbox>
-
-
-                        </v-col>
-                    </v-row>
-
-                    <v-row>
                         <v-col>
-                            <h3 class="text-center font-weight-medium ">Size</h3>
-                            <v-radio-group inline v-model="cardSize" class="mt-1">
-
-                                <v-radio class="text-left" color="primary" label="Business Card (2in x 3.5in)"
-                                    value="businessCard">
-                                   
-                                </v-radio>
-                                <v-radio class="text-left" color="primary" label="Index Card (3in x 5in)"
-                                    value="indexCard">
-                                 </v-radio>
-                                <v-radio class="text-left" color="primary" label="Custom (2in x 3in)"
-                                    value="customCard">
-                                    </v-radio>
-                            </v-radio-group>
-
-                        </v-col>
-                        <v-col>
-                            <h3 class="text-center font-weight-medium">Font</h3>
-                            <v-radio-group inline center-affix v-model="font" class="mt-1">
-
-                                <v-radio class="text-left" color="primary" label="Arial" value="Arial"></v-radio>
-                                <v-radio class="text-left" color="primary" label="Times New Roman"
-                                    value="Times"></v-radio>
-                                <v-radio class="text-left" color="primary" label="Brush Script MT " value="cursive">
-                                </v-radio>
-                            </v-radio-group>
+                            <h3 class="text-left font-weight-medium mb-1">Card Size</h3>
+                            <v-select bg-color="#ffffff" v-model="selectedCardSize" :items="cardSizes"
+                                item-value="value" variant="outlined" item-title="text" return-object
+                                @change="getPreviewVerse"></v-select>
                         </v-col>
 
                     </v-row>
 
 
-                    <v-btn v-show="!loading" class="mt-1 text-white bg-primary" size="large"
-                        @click="generateAndPrintCards"> Print</v-btn>
+
+
+                    <v-row class="mx-0">
+                        <v-col class="pl-0" cols="6">
+                            <h3 class="text-left font-weight-medium mb-1">Font</h3>
+                            <v-select bg-color="#ffffff" v-model="selectedFont" :items="fonts" item-value="value"
+                                item-title="text" variant="outlined" return-object></v-select>
+                        </v-col>
+                        <v-col cols="6">
+                            <div>
+                                <h3 class="text-left font-weight-medium mb-1">Format</h3>
+                                <v-row class="pt-2">
+                                    <v-checkbox class="text-left" color="primary" v-model="showTopic" hide-details
+                                        label="Topic"></v-checkbox>
+                                    <v-checkbox class="text-left" color="primary" v-model="showTranslation" hide-details
+                                        label="Translation"></v-checkbox>
+                                    <v-checkbox class="text-left" color="primary" v-model="showRepeatReference"
+                                        hide-details label="Repeat Reference"></v-checkbox>
+                                </v-row>
+
+                            </div>
+
+                        </v-col>
+
+                    </v-row>
+
+
+                    <v-btn v-show="!loading" class="mt-5 text-white bg-primary" size="large"
+                        @click="generateAndPrintCards">
+                        Print</v-btn>
                     <v-progress-circular v-show="loading" :size="45" color="primary"
                         indeterminate></v-progress-circular>
 
-                </v-card>
-            </v-col>
-            <v-col cols="3">
-                <v-card class="border px-2" style="min-height:100%" title="Packs">
-                    Topical Memory System:
-                    <v-btn style="width: 100%; " large class="text-body-2 my-1" @click="addPack('A')"> A: Living
-                        The New Life</v-btn>
-                    <v-btn style="width: 100%;"large class="text-body-2 my-1" @click="addPack('B')"> B:
-                        Proclaiming Christ</v-btn>
-                    <v-btn style="width: 100%;" large class="text-body-2 my-1" @click="addPack('C')"> C:
-                        Reliance On God's Resources</v-btn>
-                    <v-btn style="width: 100%;" large class="text-body-2 my-1" @click="addPack('D')"> D: Being
-                        Christ's Disciple</v-btn>
-                    <v-btn style="width: 100%;" large class="text-body-2 my-1" @click="addPack('E')"> E: Growth
-                        In Christlikeness</v-btn>
 
-                </v-card>
+
+                </div>
+
+
+
+            </v-col>
+            <v-col cols="12" md="6">
+                <h2 class=" text-center">Preview</h2>
+                <div class="column-content my-auto ">
+
+                    <!--                                         PREVIEW              -->
+
+
+                    <v-card :width="get_previewWidth()" :height="get_previewHeight()" class="cardPreview border">
+
+                        <v-row justify="space-between">
+                            <v-spacer v-show="!showTopic"></v-spacer>
+                            <p v-show="showTopic" class="topic" id="topic"
+                                :style="{ fontFamily: this.selectedFont.value }"> Christ the
+                                Center
+                            </p>
+                            <p v-show="showTranslation" class="translation" id="translation"
+                                :style="{ fontFamily: this.selectedFont.value }">
+                                {{ this.selectedTranslation }}</p>
+                        </v-row>
+
+                        <v-row>
+                            <p class="reference" id="reference" :style="{ fontFamily: this.selectedFont.value }"> 2
+                                Corinthians 5:17 </p>
+                        </v-row>
+
+                        <v-row class="mt-4">
+                            <p class="verse" id="verse" :style="{ fontFamily: this.selectedFont.value }">
+                                {{ this.previewText }}</p>
+                        </v-row>
+
+                        <v-row class="mt-4" v-show="showRepeatReference" justify="space-between">
+                            <v-spacer></v-spacer>
+                            <p class="reference2" id="reference2" :style="{ fontFamily: this.selectedFont.value }"> 2
+                                Corinthians 5:17 </p>
+                        </v-row>
+
+                    </v-card>
+
+
+
+
+                </div>
+
             </v-col>
         </v-row>
 
-        <h3 class="mt-10">Preview</h3> <!--                                         PREVIEW              -->
-        <v-card :width="get_previewWidth()" :height="get_previewHeight()" class="cardPreview border">
 
-            <v-row justify="space-between">
-                <v-spacer v-show="!showTopic"></v-spacer>
-                <p v-show="showTopic" class="topic" id="topic" :style="{ fontFamily: font }"> Christ the Center </p>
-                <p v-show="showTranslation" class="translation" id="translation" :style="{ fontFamily: font }"> ESV</p>
-            </v-row>
+        <h1 class="text-left mx-0 my-10">Verse Packs</h1>
+        <h2 class="text-left mx-0 my-5">Navigator's Topical Memory System</h2>
+        <v-row class="mx-0 " justify="space-around">
+            <VersePackCard title="A: Living the New Life"
+                description="Explore key verses that guide new believers in their journey of faith." icon="mdi-cross">
 
-            <v-row>
-                <p class="reference" id="reference" :style="{ fontFamily: font }"> 2 Corinthians 5:17 </p>
-            </v-row>
+                <p class="font-weight-bold">Christ the Center</p>
+                <p class="ml-6">2 Corinthians 5:17</p>
+                <p class="ml-6">Galatians 2:20</p>
 
-            <v-row class="mt-4">
-                <p class="verse" id="verse" :style="{ fontFamily: font }"> Therefore, if anyone is in Christ, he is a
-                    new creation.
-                    The old has passed away; behold, the new has come</p>
-            </v-row>
+                <p class="font-weight-bold">Obedience to Christ</p>
+                <p class="ml-6">Romans 12:1</p>
+                <p class="ml-6">John 14:21</p>
 
-            <v-row class="mt-4" v-show="showRepeatReference" justify="space-between">
-                <v-spacer></v-spacer>
-                <p class="reference2" id="reference2" :style="{ fontFamily: font }"> 2 Corinthians 5:17 </p>
-            </v-row>
+                <p class="font-weight-bold">The Word</p>
+                <p class="ml-6">2 Timothy 3:16</p>
+                <p class="ml-6">Joshua 1:8</p>
 
-        </v-card>
+                <p class="font-weight-bold">Prayer</p>
+                <p class="ml-6">John 15:7</p>
+                <p class="ml-6">Philippians 4:6-7</p>
+
+                <p class="font-weight-bold">Fellowship</p>
+                <p class="ml-6">Matthew 18:20</p>
+                <p class="ml-6">Hebrews 10:24-25</p>
+
+                <p class="font-weight-bold">Witnessing</p>
+                <p class="ml-6">Matthew 4:19</p>
+                <p class="ml-6">Romans 1:16</p>
+
+            </VersePackCard>
+
+            <VersePackCard title="B: Proclaiming Christ"
+                description="Discover scriptures that encourage sharing the Gospel and proclaiming Christ to others."
+                icon="mdi-chat"
+                additionalText="Discover scriptures that encourage sharing the Gospel and proclaiming Christ to others.">
+
+                <p class="font-weight-bold">All Have Sinned</p>
+                <p class="ml-6">Romans 3:23</p>
+                <p class="ml-6">Isaiah 53:6</p>
+
+                <p class="font-weight-bold">Sin's Penalty</p>
+                <p class="ml-6">Romans 6:23</p>
+                <p class="ml-6">Hebrews 9:27</p>
+
+                <p class="font-weight-bold">Christ Paid the Penalty</p>
+                <p class="ml-6">Romans 5:8</p>
+                <p class="ml-6">1 Peter 3:18</p>
+
+                <p class="font-weight-bold">Salvation is not by Works</p>
+                <p class="ml-6">Ephesians 2:8-9</p>
+                <p class="ml-6">Titus 3:5</p>
+
+                <p class="font-weight-bold">Must Receive Christ</p>
+                <p class="ml-6">John 1:12</p>
+                <p class="ml-6">Revelation 3:20</p>
+
+                <p class="font-weight-bold">Assurance of Salvation</p>
+                <p class="ml-6">1 John 5:13</p>
+                <p class="ml-6">John 5:24</p>
+            </VersePackCard>
+
+            <VersePackCard title="C: Reliance On God's Resources"
+                description="Dive deeper into the promises and resources that God provides for His people."
+                icon="mdi-bookshelf"
+                additionalText="Dive deeper into the promises and resources that God provides for His people.">
+
+                <p class="font-weight-bold">His Spirit</p>
+                <p class="ml-6">1 Corinthians 3:16</p>
+                <p class="ml-6">1 Corinthians 2:12</p>
+
+                <p class="font-weight-bold">His Strength</p>
+                <p class="ml-6">Isaiah 41:10</p>
+                <p class="ml-6">Philippians 4:13</p>
+
+                <p class="font-weight-bold">His Faithfulness</p>
+                <p class="ml-6">Lamentations 3:22-23</p>
+                <p class="ml-6">Numbers 23:19</p>
+
+                <p class="font-weight-bold">His Peace</p>
+                <p class="ml-6">Isaiah 26:3</p>
+                <p class="ml-6">1 Peter 5:7</p>
+
+                <p class="font-weight-bold">His Provision</p>
+                <p class="ml-6">Romans 8:32</p>
+                <p class="ml-6">Philippians 4:19</p>
+
+                <p class="font-weight-bold">His Help in Temptation</p>
+                <p class="ml-6">Hebrews 2:18</p>
+                <p class="ml-6">Psalms 119:9-11</p>
+
+            </VersePackCard>
+
+            <VersePackCard title="D: Being Christ's Disciple"
+                description="This pack includes the characteristics and commitments of a disciple of Christ."
+                icon="mdi-account-school"
+                additionalText="This section expands to include the characteristics and commitments of a disciple of Christ.">
+
+                <p class="font-weight-bold">Put Christ First</p>
+                <p class="ml-6">Matthew 6:33</p>
+                <p class="ml-6">Luke 9:23</p>
+
+                <p class="font-weight-bold">Separate From the World</p>
+                <p class="ml-6">1 John 2:15-16</p>
+                <p class="ml-6">Romans 12:2</p>
+
+                <p class="font-weight-bold">Be Steadfast</p>
+                <p class="ml-6">1 Corinthians 15:58</p>
+                <p class="ml-6">Hebrews 12:3</p>
+
+                <p class="font-weight-bold">Serve Others</p>
+                <p class="ml-6">Mark 10:45</p>
+                <p class="ml-6">2 Corinthians 4:5</p>
+
+                <p class="font-weight-bold">Give Generously</p>
+                <p class="ml-6">Proverbs 3:9-10</p>
+                <p class="ml-6">2 Corinthians 9:6-7</p>
+
+                <p class="font-weight-bold">Develop World Vision</p>
+                <p class="ml-6">Acts 1:8</p>
+                <p class="ml-6">Matthew 28:19-20</p>
+            </VersePackCard>
+
+            <VersePackCard title="E: Growth In Christlikeness"
+                description="Explore scriptures that guide spiritual growth and character development to become more like Christ."
+                icon="mdi-crown"
+                additionalText="Explore scriptures that guide spiritual growth and character development to become more like Christ.">
+
+                <p class="font-weight-bold">Love</p>
+                <p class="ml-6">John 13:34-35</p>
+                <p class="ml-6">1 John 3:18</p>
+
+                <p class="font-weight-bold">Humility</p>
+                <p class="ml-6">Philippians 2:3-4</p>
+                <p class="ml-6">1 Peter 5:5-6</p>
+
+                <p class="font-weight-bold">Purity</p>
+                <p class="ml-6">Ephesians 5:3</p>
+                <p class="ml-6">1 Peter 2:11</p>
+
+                <p class="font-weight-bold">Honesty</p>
+                <p class="ml-6">Leviticus 19:11</p>
+                <p class="ml-6">Acts 24:16</p>
+
+                <p class="font-weight-bold">Faith</p>
+                <p class="ml-6">Hebrews 11:6</p>
+                <p class="ml-6">Romans 4:20-21</p>
+
+                <p class="font-weight-bold">Good Works</p>
+                <p class="ml-6">Galatians 6:9-10</p>
+                <p class="ml-6">Matthew 5:16</p>
+            </VersePackCard>
+
+
+
+        </v-row>
 
     </div>
 </template>
@@ -129,18 +287,40 @@
 <script>
 import jsPDF from "jspdf";
 import * as constants from '../constants.js'
+import VersePackCard from "../components/VersePackCard.vue";
 export default {
+
+    components: {
+        VersePackCard,
+
+    },
     setup() {
         return constants;
     },
     data() {
         return {
             // Items to display in v-select
-            translations: ['ESV', 'KJV', 'NLT', 'NKJV'], //'NIV'
+            translations: ['ESV'], //'NIV'  'KJV', 'NLT', 'NKJV'
             // Default selected value
             selectedTranslation: 'ESV',
-            font: 'Arial',
-            cardSize: 'businessCard',
+
+            selectedCardSize: { text: 'Business Card (2in x 3.5in)', value: 'businessCard' },
+            cardSizes: [
+                { text: 'Business Card (2in x 3.5in)', value: 'businessCard' },
+                { text: 'Index Card (3in x 5in)', value: 'indexCard' },
+                { text: 'Custom (2in x 3in)', value: 'customCard' }],
+
+            selectedFont: { text: "Arial", value: "Arial" },
+            fonts: [
+                { text: "Arial", value: "Arial" },
+                { text: "Times New Roman", value: "Times" },
+                { text: "Brush Script MT", value: "cursive" },
+            ],
+
+
+
+            previewText: "Therefore, if anyone is in Christ, he is a new creation. The old has passed away; behold, the new has come",
+
             showTranslation: true,
             showTopic: true,
             showRepeatReference: true,
@@ -158,7 +338,13 @@ export default {
 
         };
     },
-
+    watch: {
+        selectedTranslation(newValue) {
+            // Watch for changes in selectedItem and call the function
+            this.getPreviewVerse();
+            // You can perform any logic here based on the change
+        },
+    },
     methods: {
 
         addPack(pack) {
@@ -181,10 +367,12 @@ export default {
 
         get_previewWidth() {
             const mmToPx = 3.78 // 3.78 px per mm
-            if (this.cardSize == "indexCard") {
+
+            console.log(this.selectedCardSize.value)
+            if (this.selectedCardSize.value == "indexCard") {
                 return this.indexCard_width * mmToPx;
             }
-            else if (this.cardSize == "customCard") {
+            else if (this.selectedCardSize.value == "customCard") {
                 return this.customCard_width * mmToPx;
             } else { //default business
                 return this.businessCard_width * mmToPx;
@@ -193,14 +381,26 @@ export default {
         },
         get_previewHeight() {
             const mmToPx = 3.78 // 3.78 px per mm
-            if (this.cardSize == "indexCard") {
+            if (this.selectedCardSize.value == "indexCard") {
                 return this.indexCard_height * mmToPx;
             }
-            else if (this.cardSize == "customCard") {
+            else if (this.selectedCardSize.value == "customCard") {
                 return this.customCard_height * mmToPx;
             } else { //default business
                 return this.businessCard_height * mmToPx;
             }
+        },
+
+        async getPreviewVerse() {
+
+
+            let verse = await this.fetchVerse("John 3:16");
+            console.log("Verse: " + verse)
+            if (verse && verse.verse) {
+                this.previewText = verse.verse
+            }
+            else this.previewTex = "Therefore, if anyone is in Christ, he is a new creation. The old has passed away; behold, the new has come"
+
         },
         async generateAndPrintCards() {
 
@@ -228,12 +428,12 @@ export default {
             let cardsPerColumn = businessCard_PerColumn
             let cardsPerRow = businessCard_PerRow
 
-            if (this.cardSize == "indexCard") {
+            if (this.selectedCardSize.value == "indexCard") {
                 card_width = this.indexCard_width
                 card_height = this.indexCard_height
                 cardsPerColumn = indexCard_PerColumn
                 cardsPerRow = indexCard_PerRow
-            } else if (this.cardSize == "customCard") {
+            } else if (this.selectedCardSize.value == "customCard") {
                 card_width = this.customCard_width
                 card_height = this.customCard_height
                 cardsPerColumn = customCard_PerColumn
@@ -318,6 +518,7 @@ export default {
 
         async fetchVerse(_ref) {
 
+            console.log("ref: " + _ref)
             let _verse = ""
 
             if (this.selectedTranslation == "ESV") { // ESV 
@@ -348,6 +549,35 @@ export default {
             }
             else if (this.selectedTranslation == "NLT") { // NLT
                 // https://bolls.life/get-chapter/NIV/22/8/
+
+
+
+                const params = new URLSearchParams({
+                    'q': _ref, // the Verses to request 
+                    'include-headings': false,
+                    'include-footnotes': false,
+                    'include-verse-numbers': false,
+                    'include-short-copyright': false,
+                    'include-passage-references': false
+                });
+                const options = { method: 'GET', headers: { accept: 'application/json', Authorization: this.$ESV_API_KEY } };
+
+
+                await fetch(`https://api.esv.org/v3/passage/text/?${params}`, options)
+                    .then(res => res.json())
+                    .then(res => {
+                        _verse = res.passages[0].replace(/\n\n+/g, '\n') // remove any double new lines (for Psalms)
+                    })
+                    .catch(err => console.error(err));
+
+                return {  // return verse object                                               !!!! Add Error handling   !!! TODO: 
+                    ref: _ref,
+                    verse: _verse,
+                    topic: ""
+                };
+
+
+
             }
             else if (this.selectedTranslation == "NKJV") { // NKJV
 
@@ -377,9 +607,10 @@ export default {
             const reference_FontSize = 10;
             const verse_FontSize = 9;
 
-            this.font = this.font.toLowerCase();
-            if (this.font == "arial") {
-                this.font = 'helvetica' // arial doesnt work with jspdf..  helvetica is basically the same
+            this.selectedFont.value = this.selectedFont.value.toLowerCase();
+            console.log("font: " + this.selectedFont.value)
+            if (this.selectedFont.value == "arial") {
+                this.selectedFont.value = 'helvetica' // arial doesnt work with jspdf..  helvetica is basically the same
             }
 
 
@@ -391,23 +622,23 @@ export default {
 
             // Topic 
             if (this.showTopic) {
-                doc.setFont(this.font, "bold");
+                doc.setFont(this.selectedFont.value, "bold");
                 doc.setFontSize(topic_FontSize);
                 doc.text(verse.topic, x + paddingX, y + 7);
             }
             // Translation 
             if (this.showTranslation) {
-                doc.setFont(this.font, "normal");
+                doc.setFont(this.selectedFont.value, "normal");
                 doc.setFontSize(translation_FontSize);
                 doc.text("ESV", x + width - 10, y + 7);
             }
             // Reference
-            doc.setFont(this.font, "normal");
+            doc.setFont(this.selectedFont.value, "normal");
             doc.setFontSize(reference_FontSize);
             doc.text(verse.ref, x + paddingX, y + 13);
 
             // Verse
-            doc.setFont(this.font, "normal");
+            doc.setFont(this.selectedFont.value, "normal");
             let maxHeight = y + height - 2; // Ensure 10mm padding at the bottom of the card
             let fontSize = verse_FontSize; // Start with a default font size
             let wrappedText = doc.splitTextToSize(verse.verse.trim(), width - 10); // 10mm for left and right margin
@@ -444,7 +675,7 @@ export default {
 
             // 2nd Reference
             if (this.showRepeatReference) {
-                doc.setFont(this.font, "normal");
+                doc.setFont(this.selectedFont.value, "normal");
                 doc.setFontSize(reference_FontSize);
                 doc.text(verse.ref, x + width - 30, lineY + 1);
             }
@@ -462,7 +693,7 @@ export default {
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
-    padding: 30px;
+    padding: 20px;
 }
 
 .topic {
@@ -492,5 +723,19 @@ export default {
 .reference2 {
     font-family: helvetica;
     font-size: 14px;
+}
+
+.column-content {
+
+
+    height: 100%;
+
+    text-align: center;
+
+}
+
+.li {
+    list-style: none;
+
 }
 </style>

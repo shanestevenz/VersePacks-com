@@ -2,10 +2,11 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-size: 16px;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #f8fbfb;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -18,6 +19,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -27,28 +29,49 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
- 
+
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+  font-size: 30px;
+
 }
+
+h2 {
+  font-size: 20px;
+  text-transform: none;
+
+}
+
+h3 {
+  font-size: 18px;
+  text-transform: none;
+  font-weight: bold;
+}
+
+.navBar {
+  font-size: 16px;
+  text-transform: none;
+  font-weight: 700;
+}
+
 
 button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
+  font-size: 14px;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -60,21 +83,87 @@ button:focus-visible {
 
 #app {
   max-width: 1920px;
-  padding: 1rem;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 3rem;
+ 
+  padding: 1rem 5rem;
+  
+  text-align: left;
+  width: 100%;
+  /* Make the element span the full width */
+  margin-top: 1rem;
+  transition:  0.5s ease;
 }
+
+
+/* Extra small devices (phones, 600px and down) */
+@media (max-width: 600px) {
+
+  #app {
+    max-width: 1920px;
+    padding: 1rem;
+
+    text-align: left;
+    width: 100%;
+    /* Make the element span the full width */
+    margin-top: 1rem;
+  }
+}
+
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media (min-width: 600px) {
+  #app {
+    max-width: 1920px;
+    padding: 1rem;
+
+    text-align: left;
+    width: 100%;
+    /* Make the element span the full width */
+    margin-top: 1rem;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media (min-width: 768px) {
+  #app {
+    max-width: 1920px;
+    padding: 1rem 2rem;
+
+    text-align: left;
+    width: 100%;
+    /* Make the element span the full width */
+    margin-top: 1rem;
+   
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media (min-width: 992px) {
+  #app {
+    max-width: 1920px;
+    padding: 1rem;
+    padding-left: 5rem;
+    padding-right: 5rem;
+    text-align: left;
+    width: 100%;
+    /* Make the element span the full width */
+    margin-top: 1rem;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media (min-width: 1200px) {}
+
 
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #f6f7fb;
+    background-color: #f9fafb;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }
