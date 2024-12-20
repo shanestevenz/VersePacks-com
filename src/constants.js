@@ -7,7 +7,7 @@ export const SITE_ICON = "";
 
 
 
-export const TMS_APack = `2 Corinthians 5:17 (Christ the Center),Galatians 2:20 (Christ the Center), Romans 12:1 (Obedience to Christ),
+export const TMS_APack = `2 Corinthians 5:17 (Christ the Center), Galatians 2:20 (Christ the Center), Romans 12:1 (Obedience to Christ),
 John 14:21 (Obedience to Christ), 2 Timothy 3:16 (The Word), Joshua 1:8 (The Word), John 15:7 (Prayer), Philippians 4:6-7 (Prayer),
 Matthew 18:20 (Fellowship), Hebrews 10:24-25 (Fellowship), Matthew 4:19 (Witnessing), Romans 1:16 (Witnessing), `;
 
@@ -29,3 +29,5 @@ Ephesians 5:3 (Purity), 1 Peter 2:11 (Purity), Leviticus 19:11 (Honesty), Acts 2
 Hebrews 11:6 (Faith), Romans 4:20-21 (Faith), Galatians 6:9-10 (Good Works), Matthew 5:16 (Good Works), `;
 
 export const TMS_ALL = TMS_APack + TMS_BPack + TMS_CPack + TMS_DPack + TMS_EPack;
+
+export const Five_Assurances = `1 John 5:11-12 (Assurance of Salvation), John 16:24 (Assurance of Answered Prayer), 1 Corinthians 10:13 (Assurance of Victory), 1 John 1:9 (Assurance of Forgiveness), Proverbs 3:5-6 (Assurance of Guidance)`;

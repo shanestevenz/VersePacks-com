@@ -18,7 +18,7 @@
           <h2 class="ml-1 navBar">Home</h2>
         </v-btn>
 
-
+        <!--- 
         <v-btn variant="text" to="/VersePacks" class="NavBTN">
           <v-icon icon="mdi-bookshelf"></v-icon>
           <h2 class="ml-1 navBar">Verse Packs</h2>
@@ -33,7 +33,7 @@
           <v-icon icon="mdi-plus"></v-icon>
           <h2 class="ml-1 navBar">More</h2>
         </v-btn>
-
+-->
       </v-toolbar-items>
     </v-app-bar>
 
@@ -49,39 +49,42 @@
               <p class="text-left mt-2 ">Create and print customizable Bibe verse cards for person use, study groups, or
                 ministry. </p>
             </v-col>
-            <v-col >
+            <v-col>
               <h2 class="mb-4">Quick Links</h2>
               <v-row>
                 <v-col cols="12" class="py-0">
                   <v-btn variant="text" to="/">
                     <h3 class=""> Home</h3>
-                  
+
                   </v-btn>
                 </v-col>
-
-                <v-col cols="12"  class="py-0">
+                <!-- 
+                <v-col cols="12" class="py-0">
                   <v-btn variant="text" to="/VersePacks">
-                  
+
                     <h3 class=""> Verse Packs</h3>
                   </v-btn>
                 </v-col>
 
-                <v-col cols="12"  class="py-0">
+                <v-col cols="12" class="py-0">
                   <v-btn variant="text" to="/Quiz">
-                  
+
                     <h3 class="">Quiz</h3>
                   </v-btn>
                 </v-col>
 
-                <v-col cols="12"  class="py-0">
+                <v-col cols="12" class="py-0">
                   <v-btn variant="text" to="/More">
 
                     <h3 class="">More</h3>
                   </v-btn>
                 </v-col>
+
+                 -->
               </v-row>
 
             </v-col>
+           
             <v-col>
               <h2>Connect With Us</h2>
               <p>shane@pagepros.co</p>

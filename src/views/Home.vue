@@ -15,8 +15,11 @@
 
                         <v-textarea v-model="verseInput" bg-color="#ffffff" clear-icon="mdi-close-circle" label="Verses"
                             placeholder="Pslam 23:4, John 3:16 (The Gospel)," min-width="300px" min-height="300rem"
-                            clearable no-resize persistent-placeholder variant="solo"></v-textarea>
-
+                            clearable no-resize persistent-placeholder counter maxlength="1500"
+                            variant="solo"></v-textarea>
+                        <v-alert v-show="showWarning" density="compact"
+                            text="You can request a maximum of 50 verses at a time! Please try again"
+                            title="Too Many Verses" type="warning"></v-alert>
                     </v-container>
 
                     <v-row class="px-0 mx-0">
@@ -83,7 +86,7 @@
                     <!--                                         PREVIEW              -->
 
 
-                    <v-card :width="get_previewWidth()" :height="get_previewHeight()" class="cardPreview border">
+                    <v-card :width="get_previewWidth()" :height="get_previewHeight()" class="cardPreview  border">
 
                         <v-row justify="space-between">
                             <v-spacer v-show="!showTopic"></v-spacer>
@@ -127,7 +130,8 @@
         <h2 class="text-left mx-0 my-5">Navigator's Topical Memory System</h2>
         <v-row class="mx-0 " justify="space-around">
             <VersePackCard title="A: Living the New Life"
-                description="Explore key verses that guide new believers in their journey of faith." icon="mdi-cross">
+                description="Explore key verses that guide new believers in their journey of faith." icon="mdi-cross"
+                :addBTN="() => addPack('A')">
 
                 <p class="font-weight-bold">Christ the Center</p>
                 <p class="ml-6">2 Corinthians 5:17</p>
@@ -157,8 +161,7 @@
 
             <VersePackCard title="B: Proclaiming Christ"
                 description="Discover scriptures that encourage sharing the Gospel and proclaiming Christ to others."
-                icon="mdi-chat"
-                additionalText="Discover scriptures that encourage sharing the Gospel and proclaiming Christ to others.">
+                icon="mdi-chat" :addBTN="() => addPack('B')">
 
                 <p class="font-weight-bold">All Have Sinned</p>
                 <p class="ml-6">Romans 3:23</p>
@@ -187,8 +190,7 @@
 
             <VersePackCard title="C: Reliance On God's Resources"
                 description="Dive deeper into the promises and resources that God provides for His people."
-                icon="mdi-bookshelf"
-                additionalText="Dive deeper into the promises and resources that God provides for His people.">
+                icon="mdi-bookshelf" :addBTN="() => addPack('C')">
 
                 <p class="font-weight-bold">His Spirit</p>
                 <p class="ml-6">1 Corinthians 3:16</p>
@@ -218,8 +220,7 @@
 
             <VersePackCard title="D: Being Christ's Disciple"
                 description="This pack includes the characteristics and commitments of a disciple of Christ."
-                icon="mdi-account-school"
-                additionalText="This section expands to include the characteristics and commitments of a disciple of Christ.">
+                icon="mdi-account-school" :addBTN="() => addPack('D')">
 
                 <p class="font-weight-bold">Put Christ First</p>
                 <p class="ml-6">Matthew 6:33</p>
@@ -248,8 +249,7 @@
 
             <VersePackCard title="E: Growth In Christlikeness"
                 description="Explore scriptures that guide spiritual growth and character development to become more like Christ."
-                icon="mdi-crown"
-                additionalText="Explore scriptures that guide spiritual growth and character development to become more like Christ.">
+                icon="mdi-crown" :addBTN="() => addPack('E')">
 
                 <p class="font-weight-bold">Love</p>
                 <p class="ml-6">John 13:34-35</p>
@@ -275,11 +275,37 @@
                 <p class="ml-6">Galatians 6:9-10</p>
                 <p class="ml-6">Matthew 5:16</p>
             </VersePackCard>
+        </v-row>
 
+        <h2 class="text-left mx-0 my-5">Other Packs</h2>
+        <v-row class="mx-0 " justify="left">
+
+            <VersePackCard title="5 Assurances" description="Explore key assurances given to us" icon="mdi-cross"
+                :addBTN="() => addPack('FiveAssurances')">
+
+                <p class="font-weight-bold">Assurance of Salvation</p>
+                <p class="ml-6">1 John 5:11-12 </p>
+
+
+                <p class="font-weight-bold">Assurance of Answered Prayer</p>
+                <p class="ml-6">John 16:24</p>
+
+
+                <p class="font-weight-bold">Assurance of Victory</p>
+                <p class="ml-6">1 Corinthians 10:13</p>
+
+
+                <p class="font-weight-bold">Assurance of Forgiveness</p>
+                <p class="ml-6">1 John 1:9</p>
+
+
+                <p class="font-weight-bold">Assurance of Guidance</p>
+                <p class="ml-6">Proverbs 3:5-6</p>
+
+            </VersePackCard>
 
 
         </v-row>
-
     </div>
 </template>
 
@@ -325,7 +351,7 @@ export default {
             showTopic: true,
             showRepeatReference: true,
             verseInput: "",
-
+            showWarning: false,
             loading: false,
             verse_List: [],
 
@@ -346,7 +372,10 @@ export default {
         },
     },
     methods: {
-
+        test(add) {
+            console.log("yEEe")
+            this.verseInput += constants.TMS_APack
+        },
         addPack(pack) {
 
             if (pack == "A") {
@@ -362,6 +391,9 @@ export default {
             }
             else if (pack == "All") {
                 this.verseInput += constants.TMS_ALL
+            }
+            else if (pack == "FiveAssurances") {
+                this.verseInput += constants.Five_Assurances
             }
         },
 
@@ -402,8 +434,19 @@ export default {
             else this.previewTex = "Therefore, if anyone is in Christ, he is a new creation. The old has passed away; behold, the new has come"
 
         },
+        validateForm() {
+
+            const referenceList = this.verseInput.split(","); // SPLit on commas
+
+            if (referenceList.length >= 50) {
+                this.showWarning = true
+            }
+
+        },
         async generateAndPrintCards() {
 
+
+            this.validateForm();
             // 20 unit padding around entire document
 
             // Create a new jsPDF instance
@@ -463,14 +506,31 @@ export default {
 
                 if (!(ref === null || ref === undefined || ref.trim() === "")) { //check for empties
 
-                    if (requests >= 18) { // After sending 18 requests, delay for 
+                    if (requests >= 10) { // After sending 18 requests, delay for 
                         await delay(100);
                         requests = 0
                     }
-                    let verse = await this.fetchVerse(ref);
+                    let verse;
+                    let success = false;
+
+                    // Retry logic for Too Many Requests (429)
+                    while (!success) {
+                        try {
+                            verse = await this.fetchVerse(ref); // Attempt to fetch the verse
+                            success = true; // Mark as successful if no error
+                        } catch (error) {
+                            if (error.response && error.response.status === 429) { // Check for 429 status
+                                console.warn("Too many requests. Retrying after delay...");
+                                await delay(1000); // Wait before retrying
+                            } else {
+                                console.error("Error fetching verse:", error);
+                                throw error; // Rethrow other errors
+                            }
+                        }
+                    }
 
                     requests = requests + 1
-                    console.log("TOPICC");
+                    console.log("Request: " + requests);
                     if (_topic) {
                         console.log(_topic[1]);
                         verse.topic = _topic[1]
@@ -534,12 +594,19 @@ export default {
                 const options = { method: 'GET', headers: { accept: 'application/json', Authorization: this.$ESV_API_KEY } };
 
 
-                await fetch(`https://api.esv.org/v3/passage/text/?${params}`, options)
-                    .then(res => res.json())
-                    .then(res => {
-                        _verse = res.passages[0].replace(/\n\n+/g, '\n') // remove any double new lines (for Psalms)
-                    })
-                    .catch(err => console.error(err));
+                try {
+                    const response = await fetch(`https://api.esv.org/v3/passage/text/?${params}`, options);
+                    const data = await response.json();
+
+                    if (data.passages && data.passages[0]) {
+                        _verse = data.passages[0].replace(/\n\n+/g, '\n'); // Remove any double new lines (for Psalms)
+                    } else {
+                        throw new Error("No passages found in the response");
+                    }
+                } catch (error) {
+                    console.error("Error fetching verse:", error);
+                    throw error; // Rethrow the error for further handling
+                }
 
                 return {  // return verse object                                               !!!! Add Error handling   !!! TODO: 
                     ref: _ref,
@@ -694,6 +761,11 @@ export default {
     margin-right: auto;
     margin-top: 10px;
     padding: 20px;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.cardPreview:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .topic {
