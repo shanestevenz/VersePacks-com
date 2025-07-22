@@ -11,7 +11,7 @@
 
 
                     <v-container fluid class="px-0">
-                        <p class="text-left  pb-2">Enter Bibe Verses (separated by commas)</p>
+                        <p class="text-left  pb-2">Enter Bible Verses (separated by commas)</p>
 
                         <v-textarea v-model="verseInput" bg-color="#ffffff" clear-icon="mdi-close-circle" label="Verses"
                             placeholder="Pslam 23:4, John 3:16 (The Gospel)," min-width="300px" min-height="300rem"
