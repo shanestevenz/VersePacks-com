@@ -36,9 +36,9 @@ The generated cards are optimized for clean printing. Use your browser’s print
 
 ## 📌 Future Improvements
 
-[ ] Support for double sided printing
-[ ] More translation support (NLT, KJV, etc)
-[ ] Support for custom text and formatting just bible verses
-[ ] Font size and color adjustments
+- [ ] Support for double sided printing
+- [ ] More translation support (NLT, KJV, etc)
+- [ ] Support for custom text and formatting just bible verses
+- [ ] Font size and color adjustments
 
 <img src="./public/Versepacks_product.png" style="max-width: 500px;" />
