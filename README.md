@@ -23,7 +23,6 @@ Paste your text, format it, and create shareable cards ready for printing or dig
 - Vue.js
 - Bootstrap CSS
 
-
 ## 🖨 Printing
 
 The generated cards are optimized for clean printing. Use your browser’s print dialog and consider:

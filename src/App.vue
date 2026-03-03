@@ -1,10 +1,10 @@
 <script setup>
-import Layout_SideBar from './views/Layout-SideBar.vue'
-import Layout_TopBar from './views/Layout-TopBar.vue'
+import Layout_SideBar from "./views/Layout-SideBar.vue";
+import Layout_TopBar from "./views/Layout-TopBar.vue";
 </script>
 
 <template>
-   <Layout_TopBar></Layout_TopBar>
+  <Layout_TopBar></Layout_TopBar>
 </template>
 
 <style scoped>

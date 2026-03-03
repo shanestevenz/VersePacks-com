@@ -1,14 +1,11 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <v-app-bar class=" px-4 py-2">
-
+    <v-app-bar class="px-4 py-2">
       <template v-slot:prepend>
         <v-icon icon="mdi-book-open-variant" size="42"></v-icon>
       </template>
 
       <v-app-bar-title class="websiteTitle">VersePacks</v-app-bar-title>
-
-
 
       <!---
       <v-toolbar-items class="hidden-sm-and-down">
@@ -38,25 +35,24 @@
     -->
     </v-app-bar>
 
-
-
     <v-main class="" style="">
       <router-view />
-      <v-footer color="#202938" class="pa-1 py-10" style="position: absolute; width:100%; left:0; ">
+      <v-footer color="#202938" class="pa-1 py-10" style="position: absolute; width: 100%; left: 0">
         <v-col class="ml-5 mt-0">
           <v-row>
             <v-col>
               <h2>VersePacks.com</h2>
-              <p class="text-left mt-2 ">Create and print customizable Bible verse cards for person use, study groups, or
-                ministry. </p>
+              <p class="text-left mt-2">
+                Create and print customizable Bible verse cards for person use, study groups, or
+                ministry.
+              </p>
             </v-col>
             <v-col>
               <h2 class="mb-4">Quick Links</h2>
               <v-row>
                 <v-col cols="12" class="py-0">
                   <v-btn variant="text" to="/">
-                    <h3 class=""> Home</h3>
-
+                    <h3 class="">Home</h3>
                   </v-btn>
                 </v-col>
                 <!-- 
@@ -83,38 +79,30 @@
 
                  -->
               </v-row>
-
             </v-col>
-           
+
             <v-col>
               <h2>Connect With Us</h2>
               <p>shane@akrostrategies.com</p>
             </v-col>
-
           </v-row>
           <v-divider class="mt-10" color=""></v-divider>
-          <p class="text-center mt-6">@ 2025 VersePacks.com. All rights reserved </p>
+          <p class="text-center mt-6">@ 2025 VersePacks.com. All rights reserved</p>
         </v-col>
       </v-footer>
     </v-main>
-
-
   </v-layout>
-
-
 </template>
 
 <script setup>
-import Home from './Home.vue'
+import Home from "./Home.vue";
 </script>
 
 <script>
-
 export default {
   name: "Layout",
   components: {
     Home,
-
   },
 
   data() {
@@ -122,31 +110,27 @@ export default {
       drawer: true,
       rail: false,
       verseOfTheDay: Object,
-      votd_reference: "ee"
-    }
+      votd_reference: "ee",
+    };
   },
   methods: {
-    greet() {
-
-    }
+    greet() {},
   },
   created() {
-    const options = { method: 'GET', headers: { accept: 'application/json' } };
+    const options = { method: "GET", headers: { accept: "application/json" } };
 
-    fetch('https://beta.ourmanna.com/api/v1/get?format=json&order=daily', options)
-      .then(res => res.json())
-      .then(res => { console.log(res); this.verseOfTheDay = res.verse.details; this.votd_reference = this.verseOfTheDay.reference + " (" + this.verseOfTheDay.version + ")" })
-      .catch(err => console.error(err));
-
-
-  }
-
-
+    fetch("https://beta.ourmanna.com/api/v1/get?format=json&order=daily", options)
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        this.verseOfTheDay = res.verse.details;
+        this.votd_reference =
+          this.verseOfTheDay.reference + " (" + this.verseOfTheDay.version + ")";
+      })
+      .catch((err) => console.error(err));
+  },
 };
-
-
 </script>
-
 
 <style scoped>
 .drawer-list {
@@ -167,13 +151,12 @@ export default {
 
 .websiteTitle {
   text-align: left;
-  font-size: 2.0rem !important;
+  font-size: 2rem !important;
   font-weight: 700 !important;
   letter-spacing: normal !important;
   line-height: 2rem !important;
 
-  background: linear-gradient(to left,
-      indigo, blue);
+  background: linear-gradient(to left, indigo, blue);
 
   -webkit-background-clip: text;
   color: transparent;

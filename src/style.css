@@ -29,18 +29,15 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
-
 }
 
 h1 {
   font-size: 30px;
-
 }
 
 h2 {
   font-size: 20px;
   text-transform: none;
-
 }
 
 h3 {
@@ -54,7 +51,6 @@ h3 {
   text-transform: none;
   font-weight: 700;
 }
-
 
 button {
   border-radius: 8px;
@@ -83,20 +79,18 @@ button:focus-visible {
 
 #app {
   max-width: 1920px;
- 
+
   padding: 1rem 5rem;
-  
+
   text-align: left;
   width: 100%;
   /* Make the element span the full width */
   margin-top: 1rem;
-  transition:  0.5s ease;
+  transition: 0.5s ease;
 }
-
 
 /* Extra small devices (phones, 600px and down) */
 @media (max-width: 600px) {
-
   #app {
     max-width: 1920px;
     padding: 1rem;
@@ -107,7 +101,6 @@ button:focus-visible {
     margin-top: 1rem;
   }
 }
-
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media (min-width: 600px) {
@@ -132,7 +125,6 @@ button:focus-visible {
     width: 100%;
     /* Make the element span the full width */
     margin-top: 1rem;
-   
   }
 }
 
@@ -151,8 +143,8 @@ button:focus-visible {
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
-@media (min-width: 1200px) {}
-
+@media (min-width: 1200px) {
+}
 
 @media (prefers-color-scheme: light) {
   :root {

@@ -1,11 +1,6 @@
-
-export default {
-
-}
+export default {};
 export const SITE_TITLE = "Versora";
 export const SITE_ICON = "";
-
-
 
 export const TMS_APack = `2 Corinthians 5:17 (Christ the Center), Galatians 2:20 (Christ the Center), Romans 12:1 (Obedience to Christ),
 John 14:21 (Obedience to Christ), 2 Timothy 3:16 (The Word), Joshua 1:8 (The Word), John 15:7 (Prayer), Philippians 4:6-7 (Prayer),
