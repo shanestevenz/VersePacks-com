@@ -46,7 +46,7 @@
           <v-row>
             <v-col>
               <h2>VersePacks.com</h2>
-              <p class="text-left mt-2 ">Create and print customizable Bibe verse cards for person use, study groups, or
+              <p class="text-left mt-2 ">Create and print customizable Bible verse cards for person use, study groups, or
                 ministry. </p>
             </v-col>
             <v-col>
@@ -87,7 +87,7 @@
            
             <v-col>
               <h2>Connect With Us</h2>
-              <p>shane@pagepros.co</p>
+              <p>shane@akrostrategies.com</p>
             </v-col>
 
           </v-row>
