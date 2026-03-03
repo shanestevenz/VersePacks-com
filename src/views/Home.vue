@@ -80,7 +80,25 @@
 
             </v-col>
             <v-col cols="12" md="6">
-                <h2 class=" text-center">Preview</h2>
+                <div class="d-flex justify-center align-center ga-2">
+                    <h2 class="mb-0">Preview</h2>
+
+                    <v-tooltip location="top" max-width="320">
+                        <template #activator="{ props }">
+                            <v-btn v-bind="props" icon variant="text" density="compact"
+                                aria-label="How to cut the cards">
+                                <v-icon icon="mdi-information-outline" size="20" />
+                            </v-btn>
+                        </template>
+
+                        <span>
+                            Cut along the dotted lines. A paper trimmer works best,
+                            or use a ruler + craft knife for clean edges.
+                        </span>
+                    </v-tooltip>
+                </div>
+
+                
                 <div class="column-content my-auto ">
 
                     <!--                                         PREVIEW              -->
@@ -111,7 +129,8 @@
 
                         <v-row class="mt-4" v-show="showRepeatReference" justify="space-between">
                             <v-spacer></v-spacer>
-                            <p class="reference2" id="reference2" :style="{ fontFamily: this.selectedFont.value }"> 2
+                            <p class="reference2" id="reference2" :style="{ fontFamily: this.selectedFont.value }">
+                                2
                                 Corinthians 5:17 </p>
                         </v-row>
 

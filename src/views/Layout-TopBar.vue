@@ -1,16 +1,16 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <v-app-bar class="pl-4">
+    <v-app-bar class=" px-4 py-2">
 
       <template v-slot:prepend>
-        <v-icon icon="mdi-book-open-variant" size="x-large"></v-icon>
+        <v-icon icon="mdi-book-open-variant" size="42"></v-icon>
       </template>
 
       <v-app-bar-title class="websiteTitle">VersePacks</v-app-bar-title>
 
 
 
-
+      <!---
       <v-toolbar-items class="hidden-sm-and-down">
 
         <v-btn variant="text" to="/" class="NavBTN">
@@ -18,7 +18,7 @@
           <h2 class="ml-1 navBar">Home</h2>
         </v-btn>
 
-        <!--- 
+        
         <v-btn variant="text" to="/VersePacks" class="NavBTN">
           <v-icon icon="mdi-bookshelf"></v-icon>
           <h2 class="ml-1 navBar">Verse Packs</h2>
@@ -33,8 +33,9 @@
           <v-icon icon="mdi-plus"></v-icon>
           <h2 class="ml-1 navBar">More</h2>
         </v-btn>
--->
+
       </v-toolbar-items>
+    -->
     </v-app-bar>
 
 
