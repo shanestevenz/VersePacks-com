@@ -34,7 +34,7 @@ app.use(router);
 // Init GLOBALS
 app.config.globalProperties.$GEN_API_KEY = "d2c1d7320338f567e85f345d41b855a1";
 app.config.globalProperties.$ESV_API_KEY = "34eb7977fe7a1386ce1765b308eba77cddcb3df1";
-app.config.globalProperties.$NLT_API_KEY = "";
+app.config.globalProperties.$Bible_API_KEY = "zdMrEbHAPmN6G6SiqZ_2D"; //https://api.bible/api-reference   NLT NIV KJV
 app.config.globalProperties.$N_API_KEY = "";
 
 app.mount("#app");

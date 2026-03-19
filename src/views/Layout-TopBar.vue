@@ -1,5 +1,6 @@
 <template>
   <v-layout class="rounded rounded-md">
+    
     <v-app-bar class="px-4 py-2">
       <template v-slot:prepend>
         <v-icon icon="mdi-book-open-variant" size="42"></v-icon>
@@ -36,6 +37,21 @@
     </v-app-bar>
 
     <v-main class="" style="">
+      <v-container class="pt-4 pb-0">
+        <v-alert
+          v-model="showUpdateBanner"
+          type="info"
+          variant="tonal"
+          color="#EE4B2B"
+          closable
+          close-label="Dismiss update banner"
+          border="start"
+          icon="mdi-bell-badge-outline"
+          title="New Updates - 3/19/26"
+          text="Added support for NIV, NLT, and KJV translations."
+        />
+      </v-container>
+      
       <router-view />
       <v-footer color="#202938" class="pa-1 py-10" style="position: absolute; width: 100%; left: 0">
         <v-col class="ml-5 mt-0">
@@ -109,6 +125,7 @@ export default {
     return {
       drawer: true,
       rail: false,
+      showUpdateBanner: true,
       verseOfTheDay: Object,
       votd_reference: "ee",
     };

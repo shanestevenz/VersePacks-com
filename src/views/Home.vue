@@ -8,115 +8,52 @@
           <v-container fluid class="px-0">
             <p class="text-left pb-2">Enter Bible Verses (separated by commas)</p>
 
-            <v-textarea
-              v-model="verseInput"
-              bg-color="#ffffff"
-              clear-icon="mdi-close-circle"
-              label="Verses"
-              placeholder="Pslam 23:4, John 3:16 (The Gospel),"
-              min-width="300px"
-              min-height="300rem"
-              clearable
-              no-resize
-              persistent-placeholder
-              counter
-              maxlength="1500"
-              variant="solo"
-            ></v-textarea>
-            <v-alert
-              v-show="showWarning"
-              density="compact"
-              text="You can request a maximum of 50 verses at a time! Please try again"
-              title="Too Many Verses"
-              type="warning"
-            ></v-alert>
+            <v-textarea v-model="verseInput" bg-color="#ffffff" clear-icon="mdi-close-circle" label="Verses"
+              placeholder="Pslam 23:4, John 3:16 (The Gospel)," min-width="300px" min-height="300rem" clearable
+              no-resize persistent-placeholder counter maxlength="1500" variant="solo"></v-textarea>
+            <v-alert v-show="showWarning" density="compact"
+              text="You can request a maximum of 50 verses at a time! Please try again" title="Too Many Verses"
+              type="warning"></v-alert>
           </v-container>
 
           <v-row class="px-0 mx-0">
             <v-col class="px-0">
               <h3 class="text-left font-weight-medium mb-1">Translation</h3>
-              <v-select
-                bg-color="#ffffff"
-                @change="getPreviewVerse"
-                v-model="selectedTranslation"
-                :items="translations"
-                variant="outlined"
-                return-object
-              ></v-select>
+              <v-select bg-color="#ffffff" @change="getPreviewVerse" v-model="selectedTranslation" :items="translations"
+                item-value="value" variant="outlined" item-title="text" return-object></v-select>
             </v-col>
 
             <v-col>
               <h3 class="text-left font-weight-medium mb-1">Card Size</h3>
-              <v-select
-                bg-color="#ffffff"
-                v-model="selectedCardSize"
-                :items="cardSizes"
-                item-value="value"
-                variant="outlined"
-                item-title="text"
-                return-object
-                @change="getPreviewVerse"
-              ></v-select>
+              <v-select bg-color="#ffffff" v-model="selectedCardSize" :items="cardSizes" item-value="value"
+                variant="outlined" item-title="text" return-object @change="getPreviewVerse"></v-select>
             </v-col>
           </v-row>
 
           <v-row class="mx-0">
             <v-col class="pl-0" cols="6">
               <h3 class="text-left font-weight-medium mb-1">Font</h3>
-              <v-select
-                bg-color="#ffffff"
-                v-model="selectedFont"
-                :items="fonts"
-                item-value="value"
-                item-title="text"
-                variant="outlined"
-                return-object
-              ></v-select>
+              <v-select bg-color="#ffffff" v-model="selectedFont" :items="fonts" item-value="value" item-title="text"
+                variant="outlined" return-object></v-select>
             </v-col>
             <v-col cols="6">
               <div>
                 <h3 class="text-left font-weight-medium mb-1">Format</h3>
                 <v-row class="pt-2">
-                  <v-checkbox
-                    class="text-left"
-                    color="primary"
-                    v-model="showTopic"
-                    hide-details
-                    label="Topic"
-                  ></v-checkbox>
-                  <v-checkbox
-                    class="text-left"
-                    color="primary"
-                    v-model="showTranslation"
-                    hide-details
-                    label="Translation"
-                  ></v-checkbox>
-                  <v-checkbox
-                    class="text-left"
-                    color="primary"
-                    v-model="showRepeatReference"
-                    hide-details
-                    label="Repeat Reference"
-                  ></v-checkbox>
+                  <v-checkbox class="text-left" color="primary" v-model="showTopic" hide-details
+                    label="Topic"></v-checkbox>
+                  <v-checkbox class="text-left" color="primary" v-model="showTranslation" hide-details
+                    label="Translation"></v-checkbox>
+                  <v-checkbox class="text-left" color="primary" v-model="showRepeatReference" hide-details
+                    label="Repeat Reference"></v-checkbox>
                 </v-row>
               </div>
             </v-col>
           </v-row>
 
-          <v-btn
-            v-show="!loading"
-            class="mt-5 text-white bg-primary"
-            size="large"
-            @click="generateAndPrintCards"
-          >
-            Print</v-btn
-          >
-          <v-progress-circular
-            v-show="loading"
-            :size="45"
-            color="primary"
-            indeterminate
-          ></v-progress-circular>
+          <v-btn v-show="!loading" class="mt-5 text-white bg-primary" size="large" @click="generateAndPrintCards">
+            Print</v-btn>
+          <v-progress-circular v-show="loading" :size="45" color="primary" indeterminate></v-progress-circular>
         </div>
       </v-col>
       <v-col cols="12" md="6">
@@ -125,13 +62,7 @@
 
           <v-tooltip location="top" max-width="320">
             <template #activator="{ props }">
-              <v-btn
-                v-bind="props"
-                icon
-                variant="text"
-                density="compact"
-                aria-label="How to cut the cards"
-              >
+              <v-btn v-bind="props" icon variant="text" density="compact" aria-label="How to cut the cards">
                 <v-icon icon="mdi-information-outline" size="20" />
               </v-btn>
             </template>
@@ -145,28 +76,15 @@
 
         <div class="column-content my-auto">
           <!--                                         PREVIEW              -->
-          <v-card
-            :width="get_previewWidth()"
-            :height="get_previewHeight()"
-            class="cardPreview border"
-          >
+          <v-card :width="get_previewWidth()" :height="get_previewHeight()" class="cardPreview border">
             <v-row justify="space-between">
               <v-spacer v-show="!showTopic"></v-spacer>
-              <p
-                v-show="showTopic"
-                class="topic"
-                id="topic"
-                :style="{ fontFamily: this.selectedFont.value }"
-              >
+              <p v-show="showTopic" class="topic" id="topic" :style="{ fontFamily: this.selectedFont.value }">
                 Christ the Center
               </p>
-              <p
-                v-show="showTranslation"
-                class="translation"
-                id="translation"
-                :style="{ fontFamily: this.selectedFont.value }"
-              >
-                {{ this.selectedTranslation }}
+              <p v-show="showTranslation" class="translation" id="translation"
+                :style="{ fontFamily: this.selectedFont.value }">
+                {{ this.selectedTranslation.value }}
               </p>
             </v-row>
 
@@ -184,11 +102,7 @@
 
             <v-row class="mt-4" v-show="showRepeatReference" justify="space-between">
               <v-spacer></v-spacer>
-              <p
-                class="reference2"
-                id="reference2"
-                :style="{ fontFamily: this.selectedFont.value }"
-              >
+              <p class="reference2" id="reference2" :style="{ fontFamily: this.selectedFont.value }">
                 2 Corinthians 5:17
               </p>
             </v-row>
@@ -200,12 +114,9 @@
     <h1 class="text-left mx-0 my-10">Verse Packs</h1>
     <h2 class="text-left mx-0 my-5">Navigator's Topical Memory System</h2>
     <v-row class="mx-0" justify="space-around">
-      <VersePackCard
-        title="A: Living the New Life"
-        description="Explore key verses that guide new believers in their journey of faith."
-        icon="mdi-cross"
-        :addBTN="() => addPack('A')"
-      >
+      <VersePackCard title="A: Living the New Life"
+        description="Explore key verses that guide new believers in their journey of faith." icon="mdi-cross"
+        :addBTN="() => addPack('A')">
         <p class="font-weight-bold">Christ the Center</p>
         <p class="ml-6">2 Corinthians 5:17</p>
         <p class="ml-6">Galatians 2:20</p>
@@ -231,12 +142,9 @@
         <p class="ml-6">Romans 1:16</p>
       </VersePackCard>
 
-      <VersePackCard
-        title="B: Proclaiming Christ"
+      <VersePackCard title="B: Proclaiming Christ"
         description="Discover scriptures that encourage sharing the Gospel and proclaiming Christ to others."
-        icon="mdi-chat"
-        :addBTN="() => addPack('B')"
-      >
+        icon="mdi-chat" :addBTN="() => addPack('B')">
         <p class="font-weight-bold">All Have Sinned</p>
         <p class="ml-6">Romans 3:23</p>
         <p class="ml-6">Isaiah 53:6</p>
@@ -262,12 +170,9 @@
         <p class="ml-6">John 5:24</p>
       </VersePackCard>
 
-      <VersePackCard
-        title="C: Reliance On God's Resources"
-        description="Dive deeper into the promises and resources that God provides for His people."
-        icon="mdi-bookshelf"
-        :addBTN="() => addPack('C')"
-      >
+      <VersePackCard title="C: Reliance On God's Resources"
+        description="Dive deeper into the promises and resources that God provides for His people." icon="mdi-bookshelf"
+        :addBTN="() => addPack('C')">
         <p class="font-weight-bold">His Spirit</p>
         <p class="ml-6">1 Corinthians 3:16</p>
         <p class="ml-6">1 Corinthians 2:12</p>
@@ -293,12 +198,9 @@
         <p class="ml-6">Psalms 119:9-11</p>
       </VersePackCard>
 
-      <VersePackCard
-        title="D: Being Christ's Disciple"
+      <VersePackCard title="D: Being Christ's Disciple"
         description="This pack includes the characteristics and commitments of a disciple of Christ."
-        icon="mdi-account-school"
-        :addBTN="() => addPack('D')"
-      >
+        icon="mdi-account-school" :addBTN="() => addPack('D')">
         <p class="font-weight-bold">Put Christ First</p>
         <p class="ml-6">Matthew 6:33</p>
         <p class="ml-6">Luke 9:23</p>
@@ -324,12 +226,9 @@
         <p class="ml-6">Matthew 28:19-20</p>
       </VersePackCard>
 
-      <VersePackCard
-        title="E: Growth In Christlikeness"
+      <VersePackCard title="E: Growth In Christlikeness"
         description="Explore scriptures that guide spiritual growth and character development to become more like Christ."
-        icon="mdi-crown"
-        :addBTN="() => addPack('E')"
-      >
+        icon="mdi-crown" :addBTN="() => addPack('E')">
         <p class="font-weight-bold">Love</p>
         <p class="ml-6">John 13:34-35</p>
         <p class="ml-6">1 John 3:18</p>
@@ -358,12 +257,8 @@
 
     <h2 class="text-left mx-0 my-5">Other Packs</h2>
     <v-row class="mx-0" justify="left">
-      <VersePackCard
-        title="5 Assurances"
-        description="Explore key assurances given to us"
-        icon="mdi-cross"
-        :addBTN="() => addPack('FiveAssurances')"
-      >
+      <VersePackCard title="5 Assurances" description="Explore key assurances given to us" icon="mdi-cross"
+        :addBTN="() => addPack('FiveAssurances')">
         <p class="font-weight-bold">Assurance of Salvation</p>
         <p class="ml-6">1 John 5:11-12</p>
 
@@ -386,6 +281,7 @@
 <script>
 import jsPDF from "jspdf";
 import * as constants from "../constants.js";
+import * as utils from "../utils.js";
 import VersePackCard from "../components/VersePackCard.vue";
 export default {
   components: {
@@ -397,9 +293,15 @@ export default {
   data() {
     return {
       // Items to display in v-select
-      translations: ["ESV"], //'NIV'  'KJV', 'NLT', 'NKJV'
+
+      translations: [
+        { text: "ESV", value: "ESV" }, //'NIV'  'KJV', 'NLT', 'NKJV'
+        { text: "NIV", value: "NIV" },
+        { text: "KJV", value: "KJV" },
+        { text: "NLT", value: "NLT" },
+      ],
       // Default selected value
-      selectedTranslation: "ESV",
+      selectedTranslation: { text: "ESV", value: "ESV" },
 
       selectedCardSize: { text: "Business Card (2in x 3.5in)", value: "businessCard" },
       cardSizes: [
@@ -490,7 +392,7 @@ export default {
     },
 
     async getPreviewVerse() {
-      let verse = await this.fetchVerse("John 3:16");
+      let verse = await this.fetchVerse("2 Corinthians 5:17");
       console.log("Verse: " + verse);
       if (verse && verse.verse) {
         this.previewText = verse.verse;
@@ -635,7 +537,7 @@ export default {
       console.log("ref: " + _ref);
       let _verse = "";
 
-      if (this.selectedTranslation == "ESV") {
+      if (this.selectedTranslation.value == "ESV") {
         // ESV
 
         const params = new URLSearchParams({
@@ -671,62 +573,53 @@ export default {
           verse: _verse,
           topic: "",
         };
-      } else if (this.selectedTranslation == "NLT") {
+
+      } else {
         // NLT
-        // https://bolls.life/get-chapter/NIV/22/8/
+        // https://rest.api.bible/v1/bibles/d6e14a625393b4da-01/passages/MAT.1.12-MAT.1.20
+
+        const translationIDS = {
+          NLT: "d6e14a625393b4da-01",
+          NIV: "78a9f6124f344018-01",
+          KJV: "a6aee10bb058511c-01",
+        };
+
+        const bibleId = translationIDS[this.selectedTranslation.value];
 
         const params = new URLSearchParams({
-          q: _ref, // the Verses to request
-          "include-headings": false,
-          "include-footnotes": false,
+          "content-type": "text",
+          "include-titles": false,
           "include-verse-numbers": false,
-          "include-short-copyright": false,
-          "include-passage-references": false,
         });
         const options = {
           method: "GET",
-          headers: { accept: "application/json", Authorization: this.$ESV_API_KEY },
+          headers: { accept: "application/json", "api-key": this.$Bible_API_KEY },
         };
 
-        await fetch(`https://api.esv.org/v3/passage/text/?${params}`, options)
-          .then((res) => res.json())
-          .then((res) => {
-            _verse = res.passages[0].replace(/\n\n+/g, "\n"); // remove any double new lines (for Psalms)
-          })
-          .catch((err) => console.error(err));
+        const apiRef = utils.formatBibleReference(_ref); //fomrated verses Matthew 1:1-12 -> MAT.1.1-MAT.1.12
+        console.log("apiRef: " + apiRef);
+        const url = `https://rest.api.bible/v1/bibles/${bibleId}/passages/${encodeURIComponent(apiRef)}?${params}`;
 
-        return {
-          // return verse object                                               !!!! Add Error handling   !!! TODO:
-          ref: _ref,
-          verse: _verse,
-          topic: "",
-        };
-      } else if (this.selectedTranslation == "NKJV") {
-        // NKJV
 
-        const options = {
-          method: "GET",
-          headers: { accept: "application/json", Authorization: this.$NKJV_API_KEY },
-        };
-        fetch("https://bolls.life/get-chapter/NLT/22/8/", options)
-          .then((res) => res.json())
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.error(err));
-      } else if (this.selectedTranslation == "KJV" || this.selectedTranslation == "ASV") {
-        // KJV and ASV
+        try {
+          const res = await fetch(url, options);
+          const json = await res.json();
+          console.log("json");
+          console.log(json);
+          _verse = json?.data?.content?.replace(/\n\n+/g, "\n") ?? "";
+          console.log("_verse: " + _verse);
+          return {
+            // return verse object                                               !!!! Add Error handling   !!! TODO:
+            ref: _ref,
+            verse: _verse,
+            topic: "",
+          };
 
-        const options = {
-          method: "GET",
-          headers: { accept: "application/json", Authorization: this.$GEN_API_KEY },
-        };
-        fetch("https://bolls.life/get-chapter/NLT/22/8/", options)
-          .then((res) => res.json())
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.error(err));
+        } catch (error) {
+          console.error(err);
+          return ""
+        }
+
       }
     },
 
@@ -760,7 +653,7 @@ export default {
       if (this.showTranslation) {
         doc.setFont(this.selectedFont.value, "normal");
         doc.setFontSize(translation_FontSize);
-        doc.text("ESV", x + width - 10, y + 7);
+        doc.text(this.selectedTranslation.value, x + width - 10, y + 7);
       }
       // Reference
       doc.setFont(this.selectedFont.value, "normal");
